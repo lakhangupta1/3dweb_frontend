@@ -4,7 +4,8 @@ import Gallery from './pages/Gallery';
 import Viewer from './pages/Viewer';
 import ProductForm from './pages/ProductsForm';
 import Home from './pages/Home';
-import About from './pages/About'
+import About from './pages/About';
+import ProductsList from './pages/ProductsList';
 
 // function Home() {
 //   return (
@@ -24,14 +25,7 @@ import About from './pages/About'
 //   );
 // }
 
-function ProductsList() {
-  return (
-    <div>
-      <h3>Products</h3>
-      <p>List of products will be displayed here.</p>
-    </div>
-  );
-}
+
 
 const btnStyle = {
   padding: '8px 16px',
