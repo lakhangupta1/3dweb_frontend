@@ -14,7 +14,7 @@ export default function Viewer() {
   const [loading, setLoading] = useState(true); // loader state
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/products/${id}`)
+    axios.get(`https://threedweb-backend.onrender.com/api/products/${id}`)
       .then(res => {
         const data = res || {};
         setProduct({
@@ -69,7 +69,7 @@ export default function Viewer() {
     const modelUrl = product.model_path || DEFAULT_MODEL;
 
     loader.load(
-      `http://localhost:5000${modelUrl}`,
+      `https://threedweb-backend.onrender.com${modelUrl}`,
       gltf => {
         const root = gltf.scene;
         const box = new THREE.Box3().setFromObject(root);

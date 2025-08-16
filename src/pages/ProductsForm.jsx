@@ -24,7 +24,7 @@ const ProductForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/create/products", formData);
+      await axios.post("https://threedweb-backend.onrender.com/api/create/products", formData);
       toast.success("Product added successfully!", { position: "top-right" });
 
       setFormData({
