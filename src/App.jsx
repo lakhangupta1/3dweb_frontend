@@ -7,23 +7,9 @@ import Home from './pages/Home';
 import About from './pages/About';
 import ProductsList from './pages/ProductsList';
 
-// function Home() {
-//   return (
-//     <div>
-//       <h3>Welcome to Mini 3D Shop</h3>
-//       <p>Browse our gallery, view products in 3D, or learn more about us.</p>
-//     </div>
-//   );
-// }
-
-// function About() {
-//   return (
-//     <div>
-//       <h3>About Us</h3>
-//       <p>This is a small demo 3D shop built with React and Three.js.</p>
-//     </div>
-//   );
-// }
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Logout from './pages/Logout';
 
 
 
@@ -44,21 +30,30 @@ const btnHoverStyle = {
 
 export default function App() {
   const [hovered, setHovered] = React.useState(null);
+  const [loggedIn, setLoggedIn] = React.useState(() => {
+    return localStorage.getItem('isLoggedIn') === 'true';
+  });
 
-  const navButtons = [
-    { label: 'Home', to: '/' },
-    { label: 'Products', to: '/products' },
-    { label: 'createProducts', to: '/create/product' },
-    { label: 'Gallery', to: '/gallery' },
-    { label: 'About', to: '/about' },
-  ];
+  const navButtons = loggedIn
+    ? [
+        { label: 'Home', to: '/home' },
+        { label: 'Products', to: '/products' },
+        { label: 'createProducts', to: '/create/product' },
+        { label: 'Gallery', to: '/gallery' },
+        { label: 'About', to: '/about' },
+        { label: 'Logout', to: '/logout' },
+      ]
+    : [
+        { label: 'Login', to: '/login' },
+        { label: 'Register', to: '/register' },
+      ];
 
   return (
     <div style={{ fontFamily: 'sans-serif', padding: 20 }}>
       <header
         style={{
           display: 'flex',
-          justifyContent: 'space-between', // pushes title left, buttons right
+          justifyContent: 'space-between',
           alignItems: 'center',
           marginBottom: 20,
         }}
@@ -84,12 +79,19 @@ export default function App() {
       </header>
 
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/products" element={<ProductsList />} />
-        <Route path="/product/:id" element={<Viewer />} />
-        <Route path="/create/product" element={<ProductForm />} />
-        <Route path="/gallery" element={<Gallery />} />
-        <Route path="/about" element={<About/>} />
+        {!loggedIn && <>
+          <Route path="/login" element={<Login setLoggedIn={setLoggedIn} />} />
+          <Route path="/register" element={<Register />} />
+        </>}
+        {loggedIn && <>
+          <Route path="/home" element={<Home />} />
+          <Route path="/products" element={<ProductsList />} />
+          <Route path="/product/:id" element={<Viewer />} />
+          <Route path="/create/product" element={<ProductForm />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/about" element={<About/>} />
+          <Route path="/logout" element={<Logout setLoggedIn={setLoggedIn} />} />
+        </>}
       </Routes>
     </div>
   );
