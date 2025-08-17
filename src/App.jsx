@@ -36,7 +36,7 @@ export default function App() {
 
   const navButtons = loggedIn
     ? [
-        { label: 'Home', to: '/home' },
+        { label: 'Home', to: '/' },
         { label: 'Products', to: '/products' },
         { label: 'createProducts', to: '/create/product' },
         { label: 'Gallery', to: '/gallery' },
@@ -84,7 +84,7 @@ export default function App() {
           <Route path="/register" element={<Register />} />
         </>}
         {loggedIn && <>
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/products" element={<ProductsList />} />
           <Route path="/product/:id" element={<Viewer />} />
           <Route path="/create/product" element={<ProductForm />} />

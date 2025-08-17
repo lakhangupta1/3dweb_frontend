@@ -25,7 +25,8 @@ function Login() {
         localStorage.setItem('isLoggedIn', 'true');
         if (typeof window.setLoggedIn === 'function') window.setLoggedIn(true);
         if (typeof setLoggedIn === 'function') setLoggedIn(true);
-        setTimeout(() => navigate('/home'), 1); // redirect to home after toast
+        navigate('/');
+        setTimeout(() => navigate('/'), 1); // redirect to home after toast
       }
     } catch (err) {
       toast.error(err.response?.data?.error || "Login failed");
