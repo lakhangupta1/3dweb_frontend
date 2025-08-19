@@ -8,11 +8,10 @@ const ProductForm = () => {
     name: "",
     category: "",
     price: "",
-    image: "",
-    model_path: "",
     description: "",
-    viewer_link: "",
   });
+  const [imageFile, setImageFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   const handleChange = (e) => {
     setFormData({
@@ -21,24 +20,43 @@ const ProductForm = () => {
     });
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setImageFile(file);
+    if (file) {
+      setPreviewUrl(URL.createObjectURL(file)); // preview
+    } else {
+      setPreviewUrl(null);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await axios.post("https://threedweb-backend.onrender.com/api/create/products", formData);
-      toast.success("Product added successfully!", { position: "top-right" });
 
-      setFormData({
-        name: "",
-        category: "",
-        price: "",
-        image: "",
-        model_path: "",
-        description: "",
-        viewer_link: "",
+    try {
+      const data = new FormData();
+      data.append("name", formData.name);
+      data.append("category", formData.category);
+      data.append("price", formData.price);
+      data.append("description", formData.description);
+
+      if (imageFile) {
+        data.append("image", imageFile); // must match multer field name
+      }
+
+      const res = await axios.post("https://threedweb-backend.onrender.com/api/create/products", data, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
+
+      toast.success(res.data.message || "Product added successfully!", { position: "top-right" });
+
+      // reset form
+      setFormData({ name: "", category: "", price: "", description: "" });
+      setImageFile(null);
+      setPreviewUrl(null);
     } catch (err) {
       console.error(err);
-      toast.error(" Failed to add product.", { position: "top-right" });
+      toast.error("Failed to add product.", { position: "top-right" });
     }
   };
 
@@ -73,24 +91,24 @@ const ProductForm = () => {
           required
           style={styles.input}
         />
-        <input
-          type="text"
-          name="image"
-          placeholder="Image URL"
-          value={formData.image}
-          onChange={handleChange}
-          required
-          style={styles.input}
-        />
-        <input
-          type="text"
-          name="model_path"
-          placeholder="3D Model Path"
-          value={formData.model_path}
-          onChange={handleChange}
-          required
-          style={styles.input}
-        />
+
+        {/* File Input */}
+        <label style={styles.fileLabel}>
+          {imageFile ? imageFile.name : "Choose Image"}
+          <input
+            type="file"
+            name="image"
+            accept="image/*"
+            onChange={handleFileChange}
+            style={styles.hiddenFileInput}
+          />
+        </label>
+
+        {/* Preview */}
+        {previewUrl && (
+          <img src={previewUrl} alt="Preview" style={styles.previewImage} />
+        )}
+
         <textarea
           name="description"
           placeholder="Description"
@@ -99,44 +117,12 @@ const ProductForm = () => {
           required
           style={styles.textarea}
         />
-        <input
-          type="text"
-          name="viewer_link"
-          placeholder="Viewer Link"
-          value={formData.viewer_link}
-          onChange={handleChange}
-          required
-          style={styles.input}
-        />
         <button type="submit" style={styles.button}>
           Add Product
         </button>
       </form>
 
-      {/* Toast container */}
       <ToastContainer />
-
-      <style>
-        {`
-          @keyframes gradientBG {
-            0% {background-position: 0% 50%;}
-            50% {background-position: 100% 50%;}
-            100% {background-position: 0% 50%;}
-          }
-          input, textarea {
-            transition: all 0.3s ease;
-          }
-          input:focus, textarea:focus {
-            outline: none;
-            border: 2px solid #00b4d8;
-            background-color: #e0f7ff;
-            box-shadow: 0 0 10px rgba(0,180,216,0.4);
-          }
-          button:hover {
-            background: #007bff;
-          }
-        `}
-      </style>
     </div>
   );
 };
@@ -186,6 +172,28 @@ const styles = {
     borderRadius: "8px",
     cursor: "pointer",
     transition: "all 0.3s ease",
+  },
+  fileLabel: {
+    display: "inline-block",
+    padding: "10px 15px",
+    fontSize: "16px",
+    fontWeight: "500",
+    borderRadius: "8px",
+    backgroundColor: "#00b4d8",
+    color: "#fff",
+    cursor: "pointer",
+    textAlign: "center",
+    transition: "all 0.3s ease",
+    boxShadow: "0 3px 6px rgba(0,0,0,0.2)",
+  },
+  hiddenFileInput: {
+    display: "none",
+  },
+  previewImage: {
+    marginTop: "10px",
+    maxWidth: "100%",
+    borderRadius: "8px",
+    boxShadow: "0 3px 8px rgba(0,0,0,0.2)",
   },
 };
 

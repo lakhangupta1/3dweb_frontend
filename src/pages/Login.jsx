@@ -4,7 +4,8 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const loginUrl = "https://threedweb-backend.onrender.com/api/auth/login";
+// const loginUrl = "https://threedweb-backend.onrender.com/api/auth/login";
+const loginUrl = 'https://threedweb-backend.onrender.com/api/auth/login'
 
 function Login() {
   const [email, setEmail] = useState("");

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-const url = 'https://threedweb-backend.onrender.com';
+// const url = 'https://threedweb-backend.onrender.com';
+// const url = 'http://localhost:5000'
 
 export default function Gallery() {
   const [products, setProducts] = useState([]);

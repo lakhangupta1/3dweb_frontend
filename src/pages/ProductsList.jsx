@@ -53,7 +53,7 @@ function ProductsList() {
       <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
         {products.map(product => (
           <div key={product._id} style={{ border: "1px solid #ccc", borderRadius: 8, padding: 16, width: 250, background: "#fafafa", position: "relative" }}>
-            <img src={product.image} alt={product.name} style={{ width: "100%", height: 150, objectFit: "cover", borderRadius: 4 }} onError={e => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/250x150?text=No+Image"; }} />
+            <img src={`https://threedweb-backend.onrender.com/${product.image}`} alt={product.name} style={{ width: "100%", height: 150, objectFit: "cover", borderRadius: 4 }} onError={e => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/250x150?text=No+Image"; }} />
             <h4>{product.name}</h4>
             <p><strong>Category:</strong> {product.category}</p>
             <p><strong>Price:</strong> ₹ {product.price}</p>
